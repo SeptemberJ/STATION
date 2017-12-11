@@ -58,17 +58,7 @@ import {timestampToFormatTime} from '../util/utils'
     created() {
       let Height = document.documentElement.clientHeight - 60 - 30 //-50
       this.$store.state.ScreenHeight = Height
-      axios.get(R_PRE_URL+'/getYuding'
-      ).then((res)=> {
-        let temp = res.data.arr
-        temp.map((Item,Idx)=>{
-          Item.Order_date = timestampToFormatTime(Item.fyddate.time)
-        })
-        this.dataCars = temp
-        this.ifSpin = false
-      }).catch((error)=> {
-        console.log(error)
-      })
+      this.getCarList()
     },
     computed: {
       Height(){
@@ -106,6 +96,7 @@ import {timestampToFormatTime} from '../util/utils'
                   switch(res.data.code){
                       case ('2'):
                       _this.$Message.success('预定成功!')
+                      _this.getCarList()
                       break
                       default:
                       _this.$Message.error('预定失败!')
@@ -119,6 +110,21 @@ import {timestampToFormatTime} from '../util/utils'
               },
           })
       },
+      //获取车辆列表
+      getCarList(){
+        this.ifSpin = true
+        axios.get(R_PRE_URL+'/getYuding'
+        ).then((res)=> {
+          let temp = res.data.arr
+          temp.map((Item,Idx)=>{
+            Item.Order_date = timestampToFormatTime(Item.fyddate.time)
+          })
+          this.dataCars = temp
+          this.ifSpin = false
+        }).catch((error)=> {
+          console.log(error)
+        })
+      }
     }
   }
 </script>
