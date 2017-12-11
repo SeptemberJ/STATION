@@ -9,27 +9,11 @@ const store = new Vuex.Store({
   state: {
     isMobile:false,
     activeRoute:'首页',
-    userInfo2:{
-      Name:'',
-      Master:'',
-      JoinTime:'',
-      LearnSituation:'',
-      IdCard:'',
-      Type:-1,
-      FeedBack:''
-    },
     userInfo:{
-      Name:localStorage.getItem("user_Name"),
-      Master:localStorage.getItem("user_Master"),
-      JoinTime:localStorage.getItem("user_JoinTime"),
-      LearnSituation:localStorage.getItem("user_LearnSituation"),
-      IdCard:localStorage.getItem("user_ID"),
-      Type:-1,
-      FeedBack:localStorage.getItem("user_FeedBack"),
+      Name:localStorage.getItem("user_Name")
     },
     ifLogined:localStorage.getItem("user_Logined"),
-    
-    
+    ScreenHeight:''
     },
   
   mutations:{

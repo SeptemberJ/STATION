@@ -1,5 +1,6 @@
 <template>
   <div class="com-app">
+    
     <transition>
       <router-view class="child-view"></router-view>
     </transition>

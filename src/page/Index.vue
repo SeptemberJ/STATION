@@ -1,111 +1,180 @@
 <template>
   <div class="Index">
-    <div class="LoginBox">
-      <Row class="marginTB_20 TextCenter">
-          <Col span="24"><h2>登录</h2></Col>
-      </Row>
-      <Form ref="formInline" :model="formInline" :rules="ruleInline">
-        <Row>
-          <Col span="24">
-            <FormItem prop="user">
-              <Input type="text" v-model="formInline.user" placeholder="用户名">
-                  <Icon type="ios-person-outline" slot="prepend"></Icon>
-              </Input>
-            </FormItem>
-            <FormItem prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="密码">
-                    <Icon type="ios-locked-outline" slot="prepend"></Icon>
-                </Input>
-            </FormItem>
-            <FormItem>
-                <Button type="primary" @click="handleSubmit('formInline')">登录</Button>
-            </FormItem>
-          </Col>
+     <div class="layout" :class="{'layout-hide-text': spanLeft < 5}">
+        <Row type="flex">
+            <Col :span="spanLeft" class="layout-menu-left">
+                <Menu active-name="车辆列表" theme="dark" width="auto" @on-select="OnSelectMenu">
+                    <div class="layout-logo-left">{{UserName}}</div>
+                    <MenuItem name="车辆列表">
+                        <Icon type="android-bus" :size="iconSize"></Icon>
+                        <span class="layout-text">车辆列表</span>
+                    </MenuItem>
+                    <MenuItem name="我的预约">
+                        <Icon type="ios-list" :size="iconSize"></Icon>
+                        <span class="layout-text">我的预约</span>
+                    </MenuItem>
+                    <MenuItem name="退出登录">
+                        <Icon type="power" :size="iconSize"></Icon>
+                        <span class="layout-text">退出登录</span>
+                    </MenuItem>
+                </Menu>
+            </Col>
+            <Col :span="spanRight">
+                <div class="layout-header">
+                    <Button type="text" @click="toggleClick">
+                        <Icon type="navicon" size="32"></Icon>
+                    </Button>
+                </div>
+                <div class="layout-content">
+                    <div class="layout-content-main">
+                      
+                          <CarList v-if="Cur==1"></CarList>
+                          <MyOrder v-if="Cur==2"></MyOrder>
+                      
+                    </div>
+                </div>
+                <div class="layout-copy">
+                    柏田科技提供技术支持
+                </div>
+            </Col>
         </Row>
-      </Form>
     </div>
   </div>
 </template>
 <script>
-// import MemberSideBar from 'components/MemberSideBar'
+import Vue from 'vue'
+import axios from 'axios'
+import Spin from '../components/Spin'
+import CarList from '../components/CarList'
+import MyOrder from '../components/MyOrder'
+import {timestampToFormatTime} from '../util/utils'
+
   export default{
     data: function () {
       return {
-        formInline: {
-            user: '',
-            password: ''
-        },
-        ruleInline: {
-            user: [
-                { required: true, message: '请输入用户名', trigger: 'blur' }
-            ],
-            password: [
-                { required: true, message: '请输入密码', trigger: 'blur' }
-            ]
-        }
+        Cur:1,
+        spanLeft: 5,
+        spanRight: 19
       }
     },
     mounted: function () {
       
     },
-    created: function () {
+    created() {
       
     },
     computed: {
+      iconSize () {
+          return this.spanLeft === 5 ? 14 : 24;
+      },
+      UserName(){
+        return this.$store.state.userInfo.Name
+      }
       
     },
     watch: {
       
     },
     components: {
+      CarList,
+      MyOrder
       
 
     },
     methods: {
-      handleSubmit(name) {
-          this.$refs[name].validate((valid) => {
-              if (valid) {
-                  this.$Message.success('Success!');
-                  this.$router.push({name:'车辆列表'})
-              } else {
-                  this.$Message.error('Fail!');
-              }
-          })
-      }
+      //切换左侧栏
+      toggleClick () {
+          if (this.spanLeft === 5) {
+              this.spanLeft = 2;
+              this.spanRight = 22;
+          } else {
+              this.spanLeft = 5;
+              this.spanRight = 19;
+          }
+      },
+      //切换Menu
+      OnSelectMenu(event){
+        switch(event){
+          case '车辆列表':
+          this.Cur = 1
+          document.title = '车辆列表'
+          break
+          case '我的预约':
+          this.Cur = 2
+          document.title = '我的预约'
+          break
+          case '退出登录':
+          this.$router.push({name:'登录'})
+          localStorage.clear()
+          break
+        }
+      },
+     
       
     }
   }
 </script>
 <style lang="scss">
 .Index{
-  width: 100%;
   height: 100%;
-  background-color: #FF3CAC;
-  background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
+  .layout{
+        height: 100%;
+        border: 1px solid #d7dde4;
+        background: #fff;
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .layout-breadcrumb{
+        padding: 10px 15px 0;
+    }
+    .layout-content{
+        min-height: 200px;
+        margin: 15px 0px;
+        overflow: hidden;
+        background: #fff;
+        border-radius: 4px;
+    }
+    .layout-content-main{
+        padding: 10px;
+    }
+    .layout-copy{
+      height: 30px;
+        text-align: center;
+        padding: 10px 0 20px;
+        color: #9ea7b4;
+    }
+    .layout-menu-left{
+        background: #464c5b;
+    }
+    .layout-header{
+        height: 60px;
+        background: #fff;
+        box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    }
+    .layout-logo-left{
+        width: 90%;
+        height: 30px;
+        
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 3px;
+        margin: 15px auto;
+    }
+    .layout-ceiling-main a{
+        color: #9ba7b5;
+    }
+    .layout-hide-text .layout-text{
+        display: none;
+    }
+    .ivu-col{
+        transition: width .2s ease-in-out;
+    }
 
-  .LoginBox{
-    width: 80%;
-    max-width: 500px;
-    padding:20px 0;
-    border-radius: 5px;
-    box-shadow: 10px 10px 5px #333;
-    background: #fff;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform:translate(-50%,-50%);
-    -ms-transform:translate(-50%,-50%);   /* IE 9 */
-    -moz-transform:translate(-50%,-50%);  /* Firefox */
-    -webkit-transform:translate(-50%,-50%); /* Safari 和 Chrome */
-    -o-transform:translate(-50%,-50%); 
-    form{
-      width: 90%;
-      margin: 0 auto;
-
-    } 
-  }
-
-  
-  
+}
+.ivu-row-flex{
+    height:100%;
+    overflow: hidden;
 }
 </style>
