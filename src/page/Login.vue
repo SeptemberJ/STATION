@@ -76,7 +76,7 @@ import Spin from '../components/Spin'
                       localStorage.setItem("user_Name",LoginInfo.user)
                       this.$store.state.userInfo.Name = LoginInfo.user
                       this.$Message.success('欢迎登录!')
-                      this.$router.push({name:'首页'})
+                      this.$router.push({name:'车辆列表'})
                       break
                       case ('4'):
                       this.$Message.error('用户名或密码错误!')
@@ -100,7 +100,7 @@ import Spin from '../components/Spin'
 .Login{
   width: 100%;
   height: 100%;
-  background-color: #FF3CAC;
+  background-color: #784BA0;
   background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
 
   .LoginBox{
