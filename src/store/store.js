@@ -10,7 +10,7 @@ const store = new Vuex.Store({
     isMobile:false,
     activeRoute:'首页',
     userInfo:{
-      Name:localStorage.getItem("user_Name")
+      Name:localStorage.getItem("Station_user_Name")
     },
     ifLogined:localStorage.getItem("user_Logined"),
     ScreenHeight:''

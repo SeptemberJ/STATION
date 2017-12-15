@@ -73,7 +73,7 @@ import Spin from '../components/Spin'
                   ).then((res)=> {
                     switch(res.data.result){
                       case ('2'):
-                      localStorage.setItem("user_Name",LoginInfo.user)
+                      localStorage.setItem("Station_user_Name",LoginInfo.user)
                       this.$store.state.userInfo.Name = LoginInfo.user
                       this.$Message.success('欢迎登录!')
                       this.$router.push({name:'车辆列表'})

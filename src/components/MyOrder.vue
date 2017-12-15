@@ -19,37 +19,18 @@ import {timestampToFormatTime} from '../util/utils'
             //     align: 'left',
             // },
             {
-                title: '车牌号',
-                key: 'fchehao',
+                title: '车辆类型',
+                key: 'fclzl',
             },
             {
                 title: '预约日期',
                 key: 'Order_date'
             },
             {
-                title: '操作日期',
-                key: 'Operation_date'
+                title: '数量',
+                key: 'ydzs',
+                width: 60
             },
-            // {
-            //     title: '预约',
-            //     key: 'action',
-            //     align: 'center',
-            //     render: (h, params) => {
-            //         return h('div', [
-            //             h('Button', {
-            //                 props: {
-            //                     type: 'error',
-            //                     size: 'small'
-            //                 },
-            //                 on: {
-            //                     click: () => {
-            //                         this.Order(params)
-            //                     }
-            //                 }
-            //             }, '预定')
-            //         ]);
-            //     }
-            // }
         ],
         dataOrder: []
       }
@@ -64,9 +45,9 @@ import {timestampToFormatTime} from '../util/utils'
       ).then((res)=> {
         let temp = res.data.yudingList
         temp.map((Item,Idx)=>{
-          Item.Order_date = timestampToFormatTime(Item.fyddate.time)
-          Item.Operation_date = timestampToFormatTime(Item.yuding_time
-.time)
+          Item.Order_date = timestampToFormatTime(Item.Date)
+//           Item.Operation_date = timestampToFormatTime(Item.yuding_time
+// .time)
         })
         this.dataOrder = temp
         this.ifSpin = false
