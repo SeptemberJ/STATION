@@ -7,6 +7,7 @@ import * as Storage from "../util/storage.js";
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
+    limitDate:new Date(),
     isMobile:false,
     activeRoute:'首页',
     userInfo:{

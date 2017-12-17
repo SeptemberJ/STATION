@@ -12,6 +12,7 @@ import {timestampToFormatTime} from '../util/utils'
 import * as Moment from 'moment'
   export default{
     data: function () {
+      var S = this
       return {
         ifSpin:true,
         begin_date:'',
@@ -19,6 +20,7 @@ import * as Moment from 'moment'
         end_dateS:'',
         end_date:'',
         cls:1,
+        remark:'',
         columns: [
             // {
             //     type: 'index',
@@ -60,7 +62,24 @@ import * as Moment from 'moment'
                 }
             }
         ],
-        dataCars: []
+        dataCars: [],
+        optionsS: {
+            disabledDate (date) {
+                return date && date.valueOf() <= Date.now();
+            }
+        },
+        optionsE: {
+          disabledDate (date) {
+            return date && date.valueOf() <= Date.now();
+                // if(S.begin_date == ''){
+                //   return date && date.valueOf() <= Date.now();
+                // }else{
+                //   return date && date.valueOf() <= Moment(S.limitDate).valueOf();
+                // }
+            }
+            
+        },
+        
       }
     },
     mounted: function () {
@@ -74,10 +93,16 @@ import * as Moment from 'moment'
     computed: {
       Height(){
         return this.$store.state.ScreenHeight
+      },
+      limitDate(){
+        return this.$store.state.limitDate
       }
       
     },
     watch: {
+      limitDate(){
+        return this.$store.state.limitDate
+      }
       
     },
     components: {
@@ -90,14 +115,23 @@ import * as Moment from 'moment'
       Order (ROW) {
         let Info = ROW.row
         let _this = this
-        console.log(Info)
+        _this.begin_date = ''
+        _this.end_date = ''
+        _this.remark = ''
           this.$Modal.confirm({
               title: '预约信息',
               okText:'提交',
               maskClosable:false,
               onOk: () => {
+                console.log('pppp=')
+                console.log(_this.begin_date)
+                console.log(_this.end_date)
                 if(!_this.begin_date || !_this.end_date){
                   _this.$Message.error('预约时间为必填项!')
+                  return false
+                }
+                if(!Moment(_this.begin_date).isBefore(_this.end_date)){
+                  _this.$Message.error('结束时间不能小于开始时间!')
                   return false
                 }
                 _this.ifSpin = true
@@ -107,7 +141,8 @@ import * as Moment from 'moment'
                   end_date: Moment(_this.end_date).utc().add(0,'hours'),
                   cls:_this.cls,
                   fclzl:Info.fclzl,
-                  yuding_people:_this.$store.state.userInfo.Name
+                  yuding_people:_this.$store.state.userInfo.Name,
+                  remark:_this.remark
                 }
                 axios.post(R_PRE_URL+'/updateYuing.do',DATA
                 ).then((res)=> {
@@ -136,15 +171,35 @@ import * as Moment from 'moment'
                                 h('DatePicker', {
                                     props: {
                                         type:'datetime',
-                                        value: _this.begin_date,
                                         placeholder: '开始时间',
-                                        class:'marginT_10'
+                                        value:_this.begin_date,
+                                        class:'marginT_10',
+                                        editable:false,
+                                        options:_this.optionsS
 
                                     },
                                     on: {
-                                        input: (Val1) => {
-                                            _this.begin_date = Val1
-                                            _this.begin_dateS = Val1.getTime()
+                                        // 'on-change': (Val) => {
+                                        //   _this.begin_date = Val
+                                        //     // if(_this.end_date && ! Moment(Val1).isBefore(_this.end_date)){
+                                        //     //   _this.begin_date = ''
+                                        //     //   _this.$Message.error('结束时间不能小于开始时间!')
+                                        //     // }else{
+                                        //     //   _this.begin_date = Val1
+                                        //     // }
+                                        // },
+                                        // 'on-ok':(Val) => {
+                                        //   _this.begin_date = Val
+                                        //   // if(_this.end_date && ! Moment(Val1).isBefore(_this.end_date)){
+                                        //   //     _this.begin_date = ''
+                                        //   //     this.vaule='111'
+                                        //   //     _this.$Message.error('结束时间不能小于开始时间!')
+                                        //   //   }else{
+                                        //   //     _this.begin_date = Val1
+                                        //   //   }
+                                        // },
+                                        input:(Val) => {
+                                          _this.begin_date = Val
                                         }
                                     },
                                 }),
@@ -156,21 +211,28 @@ import * as Moment from 'moment'
                                 h('DatePicker', {
                                     props: {
                                         type:'datetime',
-                                        value: _this.end_date,
+                                        value:_this.end_date,
                                         placeholder: '请选择',
-                                        class:'marginT_10'
+                                        class:'marginT_10',
+                                        editable:false,
+                                        options:_this.optionsE
                                     },
                                     on: {
-                                        input: (Val2) => {
-                                            _this.end_date = Val2
-                                            _this.end_dateS = Val2.getTime()
+                    //                   'on-change': (Val) => {
+                    //                     _this.end_date = Val
+                    // 　　　　　　　　　　},
+                    //                     'on-ok':(Val) => {
+                    //                       _this.end_date = Val
+                    // 　　　　　　　　　　},
+                                        input:(Val) => {
+                                          _this.end_date = Val
                                         }
-                                    }
+                                    },
+                                    
                                 }),
                                 h('p', {
                                    props: {
                                     },
-
                                 },'预约数量'),
                                 h('InputNumber', {
                                   props: {
@@ -183,6 +245,23 @@ import * as Moment from 'moment'
                                           _this.cls = val
                                       }
 
+                                  }
+                              }),
+                              h('p', {
+                                 props: {
+                                  },
+                              },'行程'),
+                              h('Input', {
+                                  props: {
+                                      value: this.value,
+                                      autofocus: true,
+                                      placeholder: '请输入行程'
+                                  },
+                                  on: {
+                                      input: (val) => {
+                                          this.value = val
+                                          _this.remark = val
+                                      }
                                   }
                               })
                             ]);

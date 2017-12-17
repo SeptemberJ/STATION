@@ -13,6 +13,10 @@
                         <Icon type="ios-list" :size="iconSize"></Icon>
                         <span class="layout-text">我的预约</span>
                     </MenuItem>
+                    <MenuItem name="密码修改">
+                        <Icon type="unlocked" :size="iconSize"></Icon>
+                        <span class="layout-text">密码修改</span>
+                    </MenuItem>
                     <MenuItem name="退出登录">
                         <Icon type="power" :size="iconSize"></Icon>
                         <span class="layout-text">退出登录</span>
@@ -30,11 +34,12 @@
                       
                           <CarList v-if="Cur==1"></CarList>
                           <MyOrder v-if="Cur==2"></MyOrder>
+                          <ModifyPsd v-if="Cur==3"></ModifyPsd>
                       
                     </div>
                 </div>
                 <div class="layout-copy">
-                    柏田科技提供技术支持
+                    <!-- 柏田科技提供技术支持 -->
                 </div>
             </Col>
         </Row>
@@ -47,6 +52,7 @@ import axios from 'axios'
 import Spin from '../components/Spin'
 import CarList from '../components/CarList'
 import MyOrder from '../components/MyOrder'
+import ModifyPsd from '../components/ModifyPsd'
 import {timestampToFormatTime} from '../util/utils'
 
   export default{
@@ -77,7 +83,8 @@ import {timestampToFormatTime} from '../util/utils'
     },
     components: {
       CarList,
-      MyOrder
+      MyOrder,
+      ModifyPsd
       
 
     },
@@ -107,6 +114,9 @@ import {timestampToFormatTime} from '../util/utils'
           this.$router.push({name:'登录'})
           localStorage.clear()
           break
+          case '密码修改':
+          this.Cur = 3
+          document.title = '密码修改'
         }
       },
      

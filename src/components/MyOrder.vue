@@ -23,12 +23,24 @@ import {timestampToFormatTime} from '../util/utils'
                 key: 'fclzl',
             },
             {
+                title: '起始时间',
+                key: 'begin_date',
+            },
+            {
+                title: '返程时间',
+                key: 'end_date',
+            },
+            {
                 title: '预约日期',
                 key: 'Order_date'
             },
             {
+                title: '行程',
+                key: 'remark'
+            },
+            {
                 title: '数量',
-                key: 'ydzs',
+                key: 'cls',
                 width: 60
             },
         ],
@@ -45,7 +57,10 @@ import {timestampToFormatTime} from '../util/utils'
       ).then((res)=> {
         let temp = res.data.yudingList
         temp.map((Item,Idx)=>{
-          Item.Order_date = timestampToFormatTime(Item.Date)
+          //Item.Order_date = Moment.utc(Item.yuding_time.time)
+          Item.Order_date = timestampToFormatTime(Item.yuding_time.time)
+          Item.begin_date = timestampToFormatTime(Item.begin_date.time)
+          Item.end_date = timestampToFormatTime(Item.end_date.time)
 //           Item.Operation_date = timestampToFormatTime(Item.yuding_time
 // .time)
         })
