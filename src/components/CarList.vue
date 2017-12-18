@@ -254,7 +254,7 @@ import * as Moment from 'moment'
                               h('Input', {
                                   props: {
                                       value: this.value,
-                                      autofocus: true,
+                                      autofocus: false,
                                       placeholder: '请输入行程'
                                   },
                                   on: {

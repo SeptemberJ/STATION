@@ -146,7 +146,7 @@ import {timestampToFormatTime} from '../util/utils'
         border-radius: 4px;
     }
     .layout-content-main{
-        padding: 10px;
+        padding: 10px 5px;
     }
     .layout-copy{
       height: 30px;

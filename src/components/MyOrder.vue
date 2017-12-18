@@ -1,6 +1,18 @@
 <template>
   <div class="MyOrder">
-    <Table :height="Height" border :columns="columns" :data="dataOrder" show-header :show-header="true" :border="false"></Table>
+  <!-- <div v-if="isMobile" class="MobileOrder" style="height: 200px;overflow:scroll"> -->
+    <div v-if="isMobile" class="MobileOrder" :style="{height: Height + 'px',overflow:'scroll'}">
+      <Card v-for="(Item,Idx) in dataOrder " class="marginT_20">
+          <!-- <p slot="title">The standard card</p> -->
+          <p>车辆类型：{{Item.fclzl}}</p>
+          <p>起始时间：{{Item.begin_date}}</p>
+          <p>返程时间：{{Item.end_date}}</p>
+          <p>预约日期：{{Item.Order_date}}</p>
+          <p>行程：{{Item.remark}}</p>
+          <p>数量：{{Item.cls}}</p>
+      </Card>
+    </div>
+    <Table v-else :height="Height" border :columns="columns" :data="dataOrder" show-header :show-header="true" :border="false"></Table>
     <Spin v-if="ifSpin"></Spin>
   </div> 
 </template>
@@ -41,7 +53,7 @@ import {timestampToFormatTime} from '../util/utils'
             {
                 title: '数量',
                 key: 'cls',
-                width: 60
+                // width: 60
             },
         ],
         dataOrder: []
@@ -73,6 +85,9 @@ import {timestampToFormatTime} from '../util/utils'
     computed: {
       Height(){
         return this.$store.state.ScreenHeight
+      },
+      isMobile(){
+        return this.$store.state.isMobile
       }
     },
     watch: {
@@ -90,5 +105,20 @@ import {timestampToFormatTime} from '../util/utils'
 </script>
 <style lang="scss">
 .MyOrder{
+  .MobileOrder{
+    width: 100%;
+    .ivu-card:first-of-type{
+      margin-top: 0px;
+    }
+  }
+
+  .ivu-card-body{
+    margin-top: 0px;
+    padding: 5px;
+    p{
+      font-size: 12px;
+    }
+  }
+
 }
 </style>
