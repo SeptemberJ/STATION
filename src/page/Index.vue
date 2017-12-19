@@ -28,7 +28,7 @@
                     <Button type="text" @click="toggleClick">
                         <Icon type="navicon" size="32"></Icon>
                     </Button>
-                    <span style="font-size: 18px;font-weight: bold">服务电话：07723598117</span>
+                    <span style="font-size: 18px;font-weight: bold">服务电话：0772-3598117</span>
                 </div>
                 <div class="layout-content">
                     <div class="layout-content-main">

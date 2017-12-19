@@ -14,6 +14,7 @@ import * as Moment from 'moment'
     data: function () {
       var S = this
       return {
+        isMobile:false,
         ifSpin:true,
         begin_date:'',
         begin_dateS:'',
@@ -31,20 +32,22 @@ import * as Moment from 'moment'
             {
                 title: '车辆类型',
                 key: 'fclzl',
+                //width:this.$store.state.isMobile?100:'',
             },
             {
                 title: '座位数',
                 key: 'fzws',
+                width:this.$store.state.isMobile?40:'',
             },
             {
                 title: '剩余数量',
                 key: 'clsl',
+                width:this.$store.state.isMobile?40:'',
             },
             {
                 title: '预约',
                 key: 'action',
-                align: 'center',
-                width:70,
+                width:this.$store.state.isMobile?40:'',
                 render: (h, params) => {
                     return h('div', [
                         h('Button', {
@@ -89,6 +92,7 @@ import * as Moment from 'moment'
       let Height = document.documentElement.clientHeight - 60 - 30 //-50
       this.$store.state.ScreenHeight = Height
       this.getCarList()
+      this.isMobile = this.$store.state.isMobile
     },
     computed: {
       Height(){
@@ -96,7 +100,7 @@ import * as Moment from 'moment'
       },
       limitDate(){
         return this.$store.state.limitDate
-      }
+      },
       
     },
     watch: {
@@ -328,5 +332,10 @@ import * as Moment from 'moment'
 p{
     line-height: 30px;
   }
+  .ivu-table-cell{
+    padding-left:5px !important;
+    padding-right:5px !important;
+  }
+
   
 </style>
