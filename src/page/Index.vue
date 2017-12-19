@@ -28,6 +28,7 @@
                     <Button type="text" @click="toggleClick">
                         <Icon type="navicon" size="32"></Icon>
                     </Button>
+                    <span style="font-size: 18px;font-weight: bold">服务电话：07723598117</span>
                 </div>
                 <div class="layout-content">
                     <div class="layout-content-main">
@@ -162,6 +163,8 @@ import {timestampToFormatTime} from '../util/utils'
         height: 60px;
         background: #fff;
         box-shadow: 0 1px 1px rgba(0,0,0,.1);
+        display: flex;
+        align-items: center;
     }
     .layout-logo-left{
         width: 90%;
